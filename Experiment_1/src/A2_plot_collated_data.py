@@ -122,11 +122,12 @@ def export_peaksize(output_folder, filt_peaks):
 
 if __name__ == "__main__":
 
-    output_folder = 'Repeat_3/python_results'
+    output_folder = 'Experiment_1/python_results'
     plot_export = f'{output_folder}/figures/'
     if not os.path.exists(plot_export):
         os.makedirs(plot_export)
 
+    # order in which to plot data
     chap_order = ['gfp', 'tdp_gfp', 'hsp27_3d', 'hsp27_acd', 'tdp_and_hsp27_3d', 'tdp_and_hsp27_acd','aBc_wt','aBc_acd', 'tdp_and_abc_wt','tdp_and_abc_acd']
     client_order = ['tdp_GdHCl', 'tdp_gfp', 'tdp_only', 'tdp_and_hsp27_3d', 'tdp_and_hsp27_acd', 'tdp_and_abc_wt','tdp_and_abc_acd']
 
@@ -161,9 +162,9 @@ if __name__ == "__main__":
     # ------------------------- plot number of peaks and proportion coincidence ---------------------------------
 
     # import peak data from each repeat
-    repeat_peak1 = pd.read_csv('Repeat_1/python_results/peak_data.csv')
-    repeat_peak2 = pd.read_csv('Repeat_2/python_results/peak_data.csv')
-    repeat_peak3 = pd.read_csv('Repeat_3/python_results/peak_data.csv')
+    repeat_peak1 = pd.read_csv('Experiment_1/python_results/peak_data.csv')
+    repeat_peak2 = pd.read_csv('Experiment_2/python_results/peak_data.csv')
+    repeat_peak3 = pd.read_csv('Experiment_3/python_results/peak_data.csv')
 
     # add column to identify which data comes from a particular biological repeat
     repeat_peak1['biological_repeat'] = 1
@@ -184,9 +185,9 @@ if __name__ == "__main__":
 
     # ---------------------------- plot intensity of peaks ----------------------------------------------------------
 
-    peaks_repeat1 = pd.read_csv('Repeat_1/python_results/peaks.csv')
-    peaks_repeat2 = pd.read_csv('Repeat_2/python_results/peaks.csv')
-    peaks_repeat3 = pd.read_csv('Repeat_3/python_results/peaks.csv')
+    peaks_repeat1 = pd.read_csv('Experiment_1/python_results/peaks.csv')
+    peaks_repeat2 = pd.read_csv('Experiment_2/python_results/peaks.csv')
+    peaks_repeat3 = pd.read_csv('Experiment_3/python_results/peaks.csv')
 
     peaks_repeat1['biological_repeat'] = 1
     peaks_repeat2['biological_repeat'] = 2

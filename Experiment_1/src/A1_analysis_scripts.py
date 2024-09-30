@@ -310,16 +310,18 @@ def FCS_analysis_master(output_folder, data_dir, gaus_width_multiplier=2, gaus_d
 # ------------------------------------------ call functions for processing -----------------------------------------
 if __name__ == "__main__":
 
-    output_folder = 'Repeat_3/python_results'
+    output_folder = 'Experiment_1/python_results' 
 
+    # provide files for all treatments and provide a name within the key for identification
     data_dir = {
-        'treatment':'treatment_file.csv',
+        'treatment':'Experiment_1/raw_data/treatment_file.csv',
     }
 
     peaks, df_peak_data = FCS_analysis_master(output_folder, 
                                 data_dir, 
-                                gaus_width_multiplier=2, 
-                                gaus_distance=40, 
-                                gaus_prominence=10, 
-                                coincidence_time_thresh=0.02)
+                                gaus_width_multiplier=2, # how wide to set threshold
+                                gaus_distance=40, # min distance between peaks
+                                gaus_prominence=10, # prominence of peaks
+                                coincidence_time_thresh=0.02 # if peak in opposite channel within (+-) time threshold of current peak, label coincident
+                                ) 
 
