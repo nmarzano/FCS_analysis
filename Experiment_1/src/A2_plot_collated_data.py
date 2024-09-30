@@ -3,41 +3,6 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import os as os
 
-output_folder = 'Repeat_3/python_results'
-plot_export = f'{output_folder}/figures/'
-if not os.path.exists(plot_export):
-    os.makedirs(plot_export)
-
-chap_order = ['gfp', 'tdp_gfp', 'hsp27_3d', 'hsp27_acd', 'tdp_and_hsp27_3d', 'tdp_and_hsp27_acd','aBc_wt','aBc_acd', 'tdp_and_abc_wt','tdp_and_abc_acd']
-client_order = ['tdp_GdHCl', 'tdp_gfp', 'tdp_only', 'tdp_and_hsp27_3d', 'tdp_and_hsp27_acd', 'tdp_and_abc_wt','tdp_and_abc_acd']
-
-# dictionary for organizing data. Data is input as ('treatment_name', channel):'protein_group' (i.e., client or chaperone)
-plot_map = {('aBc_acd', 1):'chap',
-            ('aBc_wt', 1):'chap',
-            ('gfp', 1):'chap',
-            ('hsp27_3d', 1):'chap',
-            ('hsp27_acd', 1):'chap',
-            ('tdp_GdHCl', 1):'client',
-            ('aBc_acd', 1):'chap',
-
-            ('tdp_and_abc_acd', 1):'client',
-            ('tdp_and_abc_acd', 2):'chap',
-
-            ('tdp_and_abc_wt', 1):'client',
-            ('tdp_and_abc_wt', 2):'chap',
-
-            ('tdp_and_hsp27_3d', 2):'chap',
-            ('tdp_and_hsp27_3d', 1):'client',
-
-            ('tdp_and_hsp27_acd', 1):'client',
-            ('tdp_and_hsp27_acd', 2):'chap',
-
-            ('tdp_gfp', 1):'chap',
-            ('tdp_gfp', 2):'client',
-
-            ('tdp_only', 1):'client',
-            }
-
 # ------------------------------ combining datasets from multiple experiments --------------------
 
 def condense_peak_data(peak_merge, plot_map):
@@ -152,57 +117,98 @@ def export_peaksize(output_folder, filt_peaks):
 
     test_client.to_csv(f'{output_folder}/client_peak_size.csv')
     test_chap.to_csv(f'{output_folder}/chap_peak_size.csv')
-# ------------------------- plot number of peaks and proportion coincidence ---------------------------------
-
-# import peak data from each repeat
-repeat_peak1 = pd.read_csv('Repeat_1/python_results/peak_data.csv')
-repeat_peak2 = pd.read_csv('Repeat_2/python_results/peak_data.csv')
-repeat_peak3 = pd.read_csv('Repeat_3/python_results/peak_data.csv')
-
-# add column to identify which data comes from a particular biological repeat
-repeat_peak1['biological_repeat'] = 1
-repeat_peak2['biological_repeat'] = 2
-repeat_peak3['biological_repeat'] = 3
-
-# combine datasets
-peak_merge = pd.concat([repeat_peak1, repeat_peak2, repeat_peak3], ignore_index=True)
-new_df = condense_peak_data(peak_merge, plot_map) 
-
-plot_violin(plot_export, new_df, label='client', y_axis='peaks', plot_order=client_order)
-plot_violin(plot_export, new_df, label='client', y_axis='proportion_coincident', plot_order=client_order)
-plot_violin(plot_export, new_df, label='chap', y_axis='peaks', plot_order=chap_order)
-plot_violin(plot_export, new_df, label='chap', y_axis='proportion_coincident', plot_order=chap_order)
-
-export_data(plot_export, new_df)
 
 
-# ---------------------------- plot intensity of peaks ----------------------------------------------------------
 
-peaks_repeat1 = pd.read_csv('Repeat_1/python_results/peaks.csv')
-peaks_repeat2 = pd.read_csv('Repeat_2/python_results/peaks.csv')
-peaks_repeat3 = pd.read_csv('Repeat_3/python_results/peaks.csv')
+if __name__ == "__main__":
 
-peaks_repeat1['biological_repeat'] = 1
-peaks_repeat2['biological_repeat'] = 2
-peaks_repeat3['biological_repeat'] = 3
+    output_folder = 'Repeat_3/python_results'
+    plot_export = f'{output_folder}/figures/'
+    if not os.path.exists(plot_export):
+        os.makedirs(plot_export)
 
-peaks_for_count = pd.concat([peaks_repeat1, peaks_repeat2, peaks_repeat3], ignore_index=True)
-peaks_for_count['class'] = [plot_map.get((row['protein'], int(row['channel'])), None) for _, row in peaks_for_count.iterrows()]
+    chap_order = ['gfp', 'tdp_gfp', 'hsp27_3d', 'hsp27_acd', 'tdp_and_hsp27_3d', 'tdp_and_hsp27_acd','aBc_wt','aBc_acd', 'tdp_and_abc_wt','tdp_and_abc_acd']
+    client_order = ['tdp_GdHCl', 'tdp_gfp', 'tdp_only', 'tdp_and_hsp27_3d', 'tdp_and_hsp27_acd', 'tdp_and_abc_wt','tdp_and_abc_acd']
+
+    # dictionary for organizing data. Data is input as ('treatment_name', channel):'protein_group' (i.e., client or chaperone)
+    plot_map = {('aBc_acd', 1):'chap',
+                ('aBc_wt', 1):'chap',
+                ('gfp', 1):'chap',
+                ('hsp27_3d', 1):'chap',
+                ('hsp27_acd', 1):'chap',
+                ('tdp_GdHCl', 1):'client',
+                ('aBc_acd', 1):'chap',
+
+                ('tdp_and_abc_acd', 1):'client',
+                ('tdp_and_abc_acd', 2):'chap',
+
+                ('tdp_and_abc_wt', 1):'client',
+                ('tdp_and_abc_wt', 2):'chap',
+
+                ('tdp_and_hsp27_3d', 2):'chap',
+                ('tdp_and_hsp27_3d', 1):'client',
+
+                ('tdp_and_hsp27_acd', 1):'client',
+                ('tdp_and_hsp27_acd', 2):'chap',
+
+                ('tdp_gfp', 1):'chap',
+                ('tdp_gfp', 2):'client',
+
+                ('tdp_only', 1):'client',
+                }
 
 
-# filter for data that you want to keep or exlcude
-filt_peaks = peaks_for_count[peaks_for_count['class']=='client']
-filt_peaks = filt_peaks[~filt_peaks['protein'].str.contains('abc')]
-filt_peaks = filt_peaks[~filt_peaks['protein'].str.contains('Gd')]
+    # ------------------------- plot number of peaks and proportion coincidence ---------------------------------
 
-print(filt_peaks.groupby('protein')['value'].mean())
-print(filt_peaks.groupby('protein')['value'].median())
-print(filt_peaks.groupby('protein')['value'].sem())
-print(filt_peaks.groupby('protein')['value'].count())
+    # import peak data from each repeat
+    repeat_peak1 = pd.read_csv('Repeat_1/python_results/peak_data.csv')
+    repeat_peak2 = pd.read_csv('Repeat_2/python_results/peak_data.csv')
+    repeat_peak3 = pd.read_csv('Repeat_3/python_results/peak_data.csv')
+
+    # add column to identify which data comes from a particular biological repeat
+    repeat_peak1['biological_repeat'] = 1
+    repeat_peak2['biological_repeat'] = 2
+    repeat_peak3['biological_repeat'] = 3
+
+    # combine datasets
+    peak_merge = pd.concat([repeat_peak1, repeat_peak2, repeat_peak3], ignore_index=True)
+    new_df = condense_peak_data(peak_merge, plot_map) 
+
+    plot_violin(plot_export, new_df, label='client', y_axis='peaks', plot_order=client_order)
+    plot_violin(plot_export, new_df, label='client', y_axis='proportion_coincident', plot_order=client_order)
+    plot_violin(plot_export, new_df, label='chap', y_axis='peaks', plot_order=chap_order)
+    plot_violin(plot_export, new_df, label='chap', y_axis='proportion_coincident', plot_order=chap_order)
+
+    export_data(plot_export, new_df)
 
 
-histogram_of_count_intensity(filt_peaks, plot_export)
-violin_plot_count_intensity(filt_peaks, plot_export, palette_violin='Greys', palette_strip='Oranges', log_scale=True)
-export_peaksize(output_folder, filt_peaks)
+    # ---------------------------- plot intensity of peaks ----------------------------------------------------------
+
+    peaks_repeat1 = pd.read_csv('Repeat_1/python_results/peaks.csv')
+    peaks_repeat2 = pd.read_csv('Repeat_2/python_results/peaks.csv')
+    peaks_repeat3 = pd.read_csv('Repeat_3/python_results/peaks.csv')
+
+    peaks_repeat1['biological_repeat'] = 1
+    peaks_repeat2['biological_repeat'] = 2
+    peaks_repeat3['biological_repeat'] = 3
+
+    peaks_for_count = pd.concat([peaks_repeat1, peaks_repeat2, peaks_repeat3], ignore_index=True)
+    peaks_for_count['class'] = [plot_map.get((row['protein'], int(row['channel'])), None) for _, row in peaks_for_count.iterrows()]
+
+
+    # filter for data that you want to keep or exlcude
+    filt_peaks = peaks_for_count[peaks_for_count['class']=='client']
+    filt_peaks = filt_peaks[~filt_peaks['protein'].str.contains('abc')]
+    filt_peaks = filt_peaks[~filt_peaks['protein'].str.contains('Gd')]
+
+    print(filt_peaks.groupby('protein')['value'].mean())
+    print(filt_peaks.groupby('protein')['value'].median())
+    print(filt_peaks.groupby('protein')['value'].sem())
+    print(filt_peaks.groupby('protein')['value'].count())
+
+
+    histogram_of_count_intensity(filt_peaks, plot_export)
+    violin_plot_count_intensity(filt_peaks, plot_export, palette_violin='Greys', palette_strip='Oranges', log_scale=True)
+    export_peaksize(output_folder, filt_peaks)
 
 

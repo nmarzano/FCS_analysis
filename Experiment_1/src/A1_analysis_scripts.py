@@ -8,23 +8,6 @@ from sklearn.mixture import GaussianMixture
 from scipy.signal import find_peaks
 import os as os
 
-output_folder = 'Repeat_3/python_results'
-
-data_dir = {
-    'aBc_acd':'Z:/Chaperone_subgroup/NickM/Collaborations/Josh/FCS_data/240723 FCS Nick data/CSVs/aB-c ACD 240716 repeat.csv',
-    'aBc_wt':'Z:/Chaperone_subgroup/NickM/Collaborations/Josh/FCS_data/240716 corrected excel data/CSVs/aB-c WT.csv',
-    'hsp27_3d':'Z:/Chaperone_subgroup/NickM/Collaborations/Josh/FCS_data/240723 FCS Nick data/CSVs/Hsp273D 240716 repeat.csv',
-    'hsp27_acd':'Z:/Chaperone_subgroup/NickM/Collaborations/Josh/FCS_data/240716 corrected excel data/CSVs/Hsp27 ACD.csv',
-    'tdp_and_hsp27_acd':'Z:/Chaperone_subgroup/NickM/Collaborations/Josh/FCS_data/240716 corrected excel data/CSVs/TDP-43 + Hsp27 ACD.csv',
-    'tdp_and_hsp27_3d':'Z:/Chaperone_subgroup/NickM/Collaborations/Josh/FCS_data/240716 corrected excel data/CSVs/TDP-43 + Hsp273D.csv',
-    'tdp_and_abc_acd':'Z:/Chaperone_subgroup/NickM/Collaborations/Josh/FCS_data/240716 corrected excel data/CSVs/TDP-43 + aB-c ACD.csv',
-    'tdp_and_abc_wt':'Z:/Chaperone_subgroup/NickM/Collaborations/Josh/FCS_data/240716 corrected excel data/CSVs/TDP-43 aB-c WT.csv',
-    'tdp_only':'Z:/Chaperone_subgroup/NickM/Collaborations/Josh/FCS_data/240716 corrected excel data/CSVs/TDP-43.csv',
-    'tdp_GdHCl':'Z:/Chaperone_subgroup/NickM/Collaborations/Josh/FCS_data/240716 corrected excel data/CSVs/TDP-43 6M GdHCl.csv',
-    'tdp_gfp':'Z:/Chaperone_subgroup/NickM/Collaborations/Josh/FCS_data/240716 corrected excel data/CSVs/TDP-43 + GFP.csv',
-    'gfp':'Z:/Chaperone_subgroup/NickM/Collaborations/Josh/FCS_data/240716 corrected excel data/CSVs/GFP.csv',
-
-}
 
 font = {'weight' : 'normal', 'size'   : 12 }
 plt.rcParams['font.sans-serif'] = "Arial"
@@ -54,7 +37,6 @@ def cleanup_and_import_data(data_dir):
         test_sorted_df.columns = ['treatment', 'time_or_counts', 'column', 'value']
         test_sorted_df['treatment'] = test_sorted_df['treatment'].str.replace(' ', '_')
         test_sorted_df['treatment'] = test_sorted_df['treatment'].str.replace('__', '_')
-        
         # Splitting the column into two new columns
         test_sorted_df[['repeat', 'channel']] = test_sorted_df['treatment'].str.rsplit('_', 1, expand=True)
         # Removing the '_Count_Rate' part from the 'repeat' column
@@ -324,12 +306,20 @@ def FCS_analysis_master(output_folder, data_dir, gaus_width_multiplier=2, gaus_d
     df_peak_data = plot_and_determine_percent_coincidence(merged_df, col_df_corrected, output_folder)
     return peaks, df_peak_data
 
-# ------------------------------------------ call functions for processing -----------------------------------------
 
-peaks, df_peak_data = FCS_analysis_master(output_folder, 
-                            data_dir, 
-                            gaus_width_multiplier=2, 
-                            gaus_distance=40, 
-                            gaus_prominence=10, 
-                            coincidence_time_thresh=0.02)
+# ------------------------------------------ call functions for processing -----------------------------------------
+if __name__ == "__main__":
+
+    output_folder = 'Repeat_3/python_results'
+
+    data_dir = {
+        'treatment':'treatment_file.csv',
+    }
+
+    peaks, df_peak_data = FCS_analysis_master(output_folder, 
+                                data_dir, 
+                                gaus_width_multiplier=2, 
+                                gaus_distance=40, 
+                                gaus_prominence=10, 
+                                coincidence_time_thresh=0.02)
 
